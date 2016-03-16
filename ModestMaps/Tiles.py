@@ -81,9 +81,7 @@ octalStrings = ('000', '001', '010', '011', '100', '101', '110', '111')
 def toBinaryString(i):
     """ Return a binary string for an integer.
     """
-    return ''.join([octalStrings[int(c)]
-                    for c
-                    in oct(i)]).lstrip('0')
+    return "{:b}".format(i)
 
 def fromBinaryString(s):
     """ Return an integer for a binary string.
@@ -140,7 +138,7 @@ microsoftToCorners = {'00': '0', '01': '1', '10': '2', '11': '3'}
 def fromMicrosoft(s):
     """ Return column, row, zoom for Microsoft tile string.
     """
-    row, col = map(fromBinaryString, zip(*[list(microsoftFromCorners[c]) for c in s]))
+    row, col = [fromBinaryString(b) for b in zip(*[list(microsoftFromCorners[c]) for c in s])]
     zoom = len(s)
     return col, row, zoom
 

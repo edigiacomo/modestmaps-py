@@ -20,11 +20,12 @@
 
 from math import pi
 
-from Core import Coordinate
-from Geo import MercatorProjection, deriveTransformation
-from Providers import IMapProvider
+from .Core import Coordinate
+from .Geo import MercatorProjection, deriveTransformation
+from .Providers import IMapProvider
+from . import Tiles
 
-import random, Tiles
+import random
 
 class AbstractProvider(IMapProvider):
     def __init__(self):

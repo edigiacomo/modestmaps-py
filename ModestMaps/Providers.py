@@ -1,8 +1,8 @@
 ﻿import re
 from math import pi, pow
 
-from Core import Coordinate
-from Geo import LinearProjection, MercatorProjection, deriveTransformation
+from .Core import Coordinate
+from .Geo import LinearProjection, MercatorProjection, deriveTransformation
 
 ids = ('MICROSOFT_ROAD', 'MICROSOFT_AERIAL', 'MICROSOFT_HYBRID',
        'YAHOO_ROAD',     'YAHOO_AERIAL',     'YAHOO_HYBRID',
@@ -13,6 +13,9 @@ class IMapProvider:
     def __init__(self):
         raise NotImplementedError("Abstract method not implemented by subclass.")
         
+    def getTileUrls(self, coordinate):
+        raise NotImplementedError("Abstract method not implemented by subclass.")
+
     def getTileUrls(self, coordinate):
         raise NotImplementedError("Abstract method not implemented by subclass.")
 
@@ -27,6 +30,9 @@ class IMapProvider:
 
     def coordinateLocation(self, location):
         return self.projection.coordinateLocation(location)
+
+    def sourceCoordinate(self, coordinate):
+        raise NotImplementedError("Abstract method not implemented by subclass.")
 
     def sourceCoordinate(self, coordinate):
         wrappedColumn = coordinate.column % pow(2, coordinate.zoom)
@@ -48,7 +54,7 @@ class TemplatedMercatorProvider(IMapProvider):
         self.templates = []
         
         while template:
-            match = re.match(r'^((http|https|file)://\S+?)(,(http|https|file)://\S+)?$', template)
+            match = re.match(r'^(http://\S+?)(,http://\S+)?$', template)
             first = match.group(1)
             
             if match:
